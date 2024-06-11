@@ -5,10 +5,10 @@
 
 void countFilesAndDirectories(const char *path, int *fileCount, int *dirCount) {
     struct dirent *entry;
-    DIR *dp = opendir(path);
+    DIR *dp = opendir(path);  //open the given path
 
     if (dp == NULL) {
-        perror("opendir");
+        perror("opendir failed");
         return;
     }
 
@@ -22,7 +22,7 @@ void countFilesAndDirectories(const char *path, int *fileCount, int *dirCount) {
             (*dirCount)++;
             // Construct new path from our base path
             char newPath[1024];
-            snprintf(newPath, sizeof(newPath), "%s/%s", path, entry->d_name);
+            sprintf(newPath,"%s/%s", path, entry->d_name);  //copy the file/directory to string
             countFilesAndDirectories(newPath, fileCount, dirCount); // Recursively count in subdirectories
         } else {
             (*fileCount)++;
@@ -36,7 +36,7 @@ void listFilesAndDirectories(const char *path) {
     DIR *dp = opendir(path);
 
     if (dp == NULL) {
-        perror("opendir");
+        perror("opendir failed");
         return;
     }
 
@@ -50,7 +50,7 @@ void listFilesAndDirectories(const char *path) {
         if (entry->d_type == DT_DIR) {
             // Construct new path from our base path
             char newPath[1024];
-            snprintf(newPath, sizeof(newPath), "%s/%s", path, entry->d_name);
+            sprintf(newPath,"%s/%s", path, entry->d_name);
             listFilesAndDirectories(newPath); // Recursively list subdirectories
         }
     }
